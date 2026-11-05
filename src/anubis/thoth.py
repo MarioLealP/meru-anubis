@@ -1,7 +1,7 @@
-"""What Anubis reads from Thoth: apps in a status, and since when they have been in it.
+"""What Anubis reads from Thoth and tells it: apps in a status and since when, the unseen queue, and verdicts.
 
-Read-only (thoth.read). `changed_at` moves on any change to the row, not only the status, so "stuck since" comes from
-the item's history: the oldest version in the unbroken run of the current status.
+Reads need thoth.read, verdicts thoth.verdict (D118). `changed_at` moves on any change to the row, not only the
+status, so "stuck since" comes from the item's history: the oldest version in the unbroken run of the current status.
 """
 
 from datetime import datetime
@@ -37,7 +37,25 @@ def status_since(app: App, versions: list[_Version]) -> datetime | None:
     return since or app.first_seen
 
 
+class Item(Incoming):
+    """An item on the unseen queue."""
+
+    type: str
+    key: str
+    status: str
+
+
+class Unseen(Incoming):
+    """One source + scope that stopped seeing an item (Thoth GET /v1/unseen)."""
+
+    item: Item
+    source: str
+    scope: str
+    missed_scans: int
+
+
 _APPS = TypeAdapter(list[App])
+_UNSEEN = TypeAdapter(list[Unseen])
 _VERSIONS = TypeAdapter(list[_Version])
 
 
@@ -59,3 +77,16 @@ class Thoth(BaseModel):
         response = self.http.get(f"/v1/items/{app.id}/history")
         response.raise_for_status()
         return status_since(app, _VERSIONS.validate_json(response.content))
+
+    def unseen(self) -> list[Unseen]:
+        """What scanners stopped seeing long enough for a direct check."""
+        response = self.http.get("/v1/unseen")
+        response.raise_for_status()
+        return _UNSEEN.validate_json(response.content)
+
+    def verdict(self, item: Item, status: str, reason: str) -> None:
+        """Give a verdict - missing or retired. One already given is answered as it is."""
+        response = self.http.post(
+            "/v1/verdicts", json={"type": item.type, "key": item.key, "status": status, "reason": reason}
+        )
+        response.raise_for_status()

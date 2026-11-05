@@ -28,7 +28,11 @@ class Settings(BaseSettings):
     kubernetes_url: str = "https://kubernetes.default.svc"
     kubernetes_dir: Path = Path("/var/run/meru/kubernetes")  # token, ca.crt
     namespace: str = "anubis"
+    argocd_namespace: str = "argocd"  # the direct check for an app: its Application app-<name> (D118)
     findings_name: str = "anubis-findings"
+
+    # Off = a pass only logs the verdicts it would give (as Charon's switches): on once Mario has read a pass's output.
+    give_verdicts: bool = False
 
     # D85: planned or decommissioning longer than this is stuck.
     stuck_after: timedelta = timedelta(days=1)
