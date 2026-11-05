@@ -9,3 +9,20 @@ image:
   repository: zot.clockmost.com/meru/anubis
   digest: sha256:905cdca9af2360144f2b5ffda05ece5a1df3218ed4f8cb75cc089f5da824019a
   tag: "8e29e9f98e05"
+# A daily pass (D107's shape, D114), not a service: a CronJob, no Service, no probes. 11:30 Lisbon - half an hour after
+# Charon's 11:00 pass, so a purge that ran today is already seen, and when the server is on.
+job:
+  schedule: "30 11 * * *"
+# Thoth, read-only: the pod's own token is the login (D104; infra blueprints thoth.yaml lists anubis/anubis).
+authentikLogin:
+  enabled: true
+# Its own token for the cluster (Meru/meru rbac/anubis-findings.yaml): write the findings ConfigMap, nothing else.
+kubernetesApi:
+  enabled: true
+# The bot's token (D116): read-only, on Meru/requests alone - a retired app's removedAt + retention.
+secretEnv:
+  ANUBIS_GITEA_TOKEN:
+    secret: gitea
+    key: token
+externalSecrets:
+  gitea: {}
