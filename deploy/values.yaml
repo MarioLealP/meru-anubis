@@ -7,5 +7,5 @@ name: anubis
 owner: mario
 image:
   repository: zot.clockmost.com/meru/anubis
-  digest: sha256:0000000000000000000000000000000000000000000000000000000000000000
-  tag: ""
+  digest: sha256:905cdca9af2360144f2b5ffda05ece5a1df3218ed4f8cb75cc089f5da824019a
+  tag: "8e29e9f98e05"
