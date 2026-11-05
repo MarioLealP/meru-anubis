@@ -46,6 +46,14 @@ class RequestFiles(BaseModel):
     http: httpx2.Client
     repo: str
 
+    def check_visible(self) -> None:
+        """Raise unless the repo itself can be seen.
+
+        Gitea answers 404, not 403, for a private repo the bot isn't on - otherwise that reads as every request file
+        being gone (2026-11-05, the missing Read collaborator).
+        """
+        self.http.get(f"/api/v1/repos/{self.repo}").raise_for_status()
+
     def read(self, app: str) -> AppRequest | None:
         """The app's request, or None when there is no file (Charon deleted it, or it never existed)."""
         response = self.http.get(f"/api/v1/repos/{self.repo}/raw/apps/{app}.yaml")

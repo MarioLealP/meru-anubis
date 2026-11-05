@@ -42,6 +42,18 @@ def test_weigh_reports_only_what_is_stuck_in_a_stable_order():
     assert [(f.kind, f.app) for f in findings] == [(Kind.PURGE, "golem"), (Kind.RETIRE, "kitsune")]
 
 
+def test_weigh_fails_when_the_requests_repo_is_hidden():
+    def hidden(request: httpx2.Request) -> httpx2.Response:
+        return httpx2.Response(404 if request.url.path == "/api/v1/repos/Meru/requests" else 200, text="")
+
+    with (
+        httpx2.Client(transport=httpx2.MockTransport(thoth_handler), base_url="http://thoth") as thoth,
+        httpx2.Client(transport=httpx2.MockTransport(hidden), base_url="http://gitea") as gitea,
+        pytest.raises(httpx2.HTTPStatusError),
+    ):
+        anubis.weigh(Thoth(http=thoth), RequestFiles(http=gitea, repo="Meru/requests"), NOW, LIMITS)
+
+
 @pytest.mark.parametrize("code", [0, 1])
 def test_main_exits_with_the_pass_result(monkeypatch: pytest.MonkeyPatch, code: int):
     monkeypatch.setattr(anubis, "run", lambda: code)
