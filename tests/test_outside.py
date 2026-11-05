@@ -110,3 +110,18 @@ def test_findings_patch_or_create(exists: bool):
 def test_findings_refused_raises():
     with client(lambda _: httpx2.Response(403)) as http, pytest.raises(httpx2.HTTPStatusError):
         Findings(http=http, namespace="anubis", name="anubis-findings").write([], NOW)
+
+
+@pytest.mark.parametrize(("code", "raises"), [(200, False), (404, True)])
+def test_check_visible(code: int, raises: bool):
+    def handler(request: httpx2.Request) -> httpx2.Response:
+        assert request.url.path == "/api/v1/repos/Meru/requests"
+        return httpx2.Response(code)
+
+    with client(handler) as http:
+        files = RequestFiles(http=http, repo="Meru/requests")
+        if raises:
+            with pytest.raises(httpx2.HTTPStatusError):
+                files.check_visible()
+        else:
+            files.check_visible()

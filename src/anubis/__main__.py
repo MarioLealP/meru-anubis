@@ -24,7 +24,8 @@ log = logging.getLogger("anubis")
 
 
 def weigh(thoth: Thoth, requests: RequestFiles, now: datetime, limits: Limits) -> list[Finding]:
-    """Every stuck app, in a stable order."""
+    """Every stuck app, in a stable order. A repo it can't see fails the pass instead of dating nothing."""
+    requests.check_visible()
     findings: list[Finding] = []
     for status in ("planned", "decommissioning"):
         for app in thoth.apps(status):
