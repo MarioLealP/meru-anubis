@@ -22,10 +22,14 @@ class Kind(StrEnum):
     RETIRE = "retire-stuck"
     PURGE = "purge-overdue"
     UNDATED = "retained-undated"  # retained, but no request says when it was removed: the date can't be checked
+    # The unseen queue (D53, D118, unseen.py):
+    SCANNER_LOST = "scanner-lost"  # a scanner stopped seeing it, but the direct check finds it
+    MISSING = "missing"  # gone, and a request still declares it
+    UNCHECKED = "unchecked"  # unseen, and the direct check couldn't tell
 
 
 class Finding(BaseModel):
-    """One stuck app, as Zabbix shows it."""
+    """One stuck app or unseen item, as Zabbix shows it. `app` names it: an app by name, anything else as type:key."""
 
     model_config = ConfigDict(frozen=True)
 
