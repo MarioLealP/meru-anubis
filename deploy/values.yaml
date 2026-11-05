@@ -26,3 +26,7 @@ secretEnv:
     key: token
 externalSecrets:
   gitea: {}
+# Verdicts on (D118): Mario read the dry run anubis-dry-1 (2026-11-05: 10 gone workloads, each a 404) - "3 to 10 is
+# right, 1 and 2, i trust u". Off = a pass only logs "would be ...".
+env:
+  ANUBIS_GIVE_VERDICTS: "true"
