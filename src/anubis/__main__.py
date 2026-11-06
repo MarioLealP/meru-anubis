@@ -13,6 +13,7 @@ import sys
 from datetime import UTC, datetime
 
 import httpx2
+import sentry_sdk
 
 from anubis.checks import Finding, Limits, retained, stuck
 from anubis.cluster import Findings
@@ -117,6 +118,9 @@ def run() -> int:
 
 def main() -> None:
     """Set up logging, run one pass and exit with its code."""
+    # Crash reports to GlitchTip (D125): SENTRY_DSN comes from nuwa-app's glitchtip.dsn; unset, the SDK stays off.
+    # No local variables or request bodies in a report - either can hold a secret.
+    sentry_sdk.init(include_local_variables=False, max_request_body_size="never")
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s %(message)s")
     logging.getLogger("httpx2").setLevel(logging.WARNING)
     sys.exit(run())
