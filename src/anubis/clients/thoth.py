@@ -10,7 +10,7 @@ from uuid import UUID
 import httpx2
 from pydantic import AwareDatetime, BaseModel, ConfigDict, TypeAdapter
 
-from anubis.incoming import Incoming
+from anubis.clients.incoming import Incoming
 
 
 class App(Incoming):

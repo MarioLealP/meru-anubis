@@ -1,10 +1,10 @@
 import httpx2
 import pytest
 
-from anubis.checks import Kind
-from anubis.lookups import Look, Lookups, Seen
-from anubis.thoth import Item
-from anubis.unseen import judge, label
+from anubis.clients.lookups import Look, Lookups, Seen
+from anubis.clients.thoth import Item
+from anubis.core.checks import Kind
+from anubis.core.unseen import judge, label
 
 WORKLOAD = Item(type="workload", key="clockmost/charon/deployment/charon", status="active")
 APP = Item(type="app", key="golem", status="active")

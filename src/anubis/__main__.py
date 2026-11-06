@@ -15,14 +15,14 @@ from datetime import UTC, datetime
 import httpx2
 import sentry_sdk
 
-from anubis.checks import Finding, Limits, retained, stuck
-from anubis.cluster import Findings
+from anubis.clients.cluster import Findings
+from anubis.clients.lookups import Lookups
+from anubis.clients.request_files import RequestFiles
+from anubis.clients.thoth import Item, Thoth
+from anubis.clients.tokens import login
 from anubis.config import Settings
-from anubis.lookups import Lookups
-from anubis.request_files import RequestFiles
-from anubis.thoth import Item, Thoth
-from anubis.tokens import login
-from anubis.unseen import judge
+from anubis.core.checks import Finding, Limits, retained, stuck
+from anubis.core.unseen import judge
 
 log = logging.getLogger("anubis")
 
