@@ -10,7 +10,7 @@ from datetime import datetime
 import httpx2
 from pydantic import BaseModel, ConfigDict, TypeAdapter
 
-from anubis.checks import Finding
+from anubis.core.checks import Finding
 
 _FINDINGS = TypeAdapter(list[Finding])
 

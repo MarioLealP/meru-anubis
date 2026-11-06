@@ -11,7 +11,7 @@ from pathlib import Path
 import httpx2
 from pydantic import SecretStr
 
-from anubis.incoming import Incoming
+from anubis.clients.incoming import Incoming
 
 ASSERTION = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
 

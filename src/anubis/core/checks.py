@@ -12,7 +12,7 @@ from enum import StrEnum
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict
 
-from anubis.request_files import AppRequest
+from anubis.clients.request_files import AppRequest
 
 
 class Kind(StrEnum):

@@ -5,11 +5,11 @@ from pathlib import Path
 import httpx2
 import pytest
 
-from anubis.checks import Finding, Kind
-from anubis.cluster import Findings
-from anubis.request_files import RequestFiles
-from anubis.thoth import App, Thoth, status_since
-from anubis.tokens import ASSERTION, login
+from anubis.clients.cluster import Findings
+from anubis.clients.request_files import RequestFiles
+from anubis.clients.thoth import App, Thoth, status_since
+from anubis.clients.tokens import ASSERTION, login
+from anubis.core.checks import Finding, Kind
 
 APP_ID = "7d0c1f5e-0b7a-4c55-9a51-2f3c6f0f8a11"
 

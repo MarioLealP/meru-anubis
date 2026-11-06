@@ -2,8 +2,8 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from anubis.checks import Kind, Limits, retained, stuck
-from anubis.request_files import AppRequest
+from anubis.clients.request_files import AppRequest
+from anubis.core.checks import Kind, Limits, retained, stuck
 
 NOW = datetime(2026, 12, 10, 12, 0, tzinfo=UTC)
 LIMITS = Limits(stuck_after=timedelta(days=1), purge_grace=timedelta(days=1))

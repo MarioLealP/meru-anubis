@@ -5,10 +5,10 @@ import httpx2
 import pytest
 
 from anubis import __main__ as anubis
-from anubis.checks import Kind, Limits
-from anubis.lookups import Lookups
-from anubis.request_files import RequestFiles
-from anubis.thoth import Thoth
+from anubis.clients.lookups import Lookups
+from anubis.clients.request_files import RequestFiles
+from anubis.clients.thoth import Thoth
+from anubis.core.checks import Kind, Limits
 
 NOW = datetime(2026, 12, 10, 12, 0, tzinfo=UTC)
 LIMITS = Limits(stuck_after=timedelta(days=1), purge_grace=timedelta(days=1))

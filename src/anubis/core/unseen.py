@@ -8,9 +8,9 @@
 
 from pydantic import BaseModel, ConfigDict
 
-from anubis.checks import Finding, Kind
-from anubis.lookups import Look, Seen
-from anubis.thoth import Item
+from anubis.clients.lookups import Look, Seen
+from anubis.clients.thoth import Item
+from anubis.core.checks import Finding, Kind
 
 
 class Decision(BaseModel):
