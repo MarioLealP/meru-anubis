@@ -108,3 +108,11 @@ def test_no_check_is_cant_tell(item_type: str, key: str):
         raise AssertionError("nothing should be asked")
 
     assert lookups(handler).look(item_type, key).seen == Seen.UNKNOWN
+
+
+def test_a_stopped_app_that_vanished_is_judged_like_an_active_one():
+    parked = Item(type="app", key="factorio", status="stopped")  # scaled to 0 on purpose, then gone
+    decision = judge(parked, ["k8s-scan"], look(Seen.GONE), declared=True)
+    assert decision.verdict == "missing"
+    assert decision.finding is not None
+    assert (decision.finding.kind, decision.finding.app) == (Kind.MISSING, "factorio")

@@ -2,9 +2,10 @@
 
 Once a day, as a CronJob: it checks what scanners stopped seeing directly and gives the verdict - missing or retired
 (D53, D118) - and reports every stuck app - planned or decommissioning over a day, retained past its retention - plus
-what the checks found into the ConfigMap anubis-findings, which Zabbix reads (D115). One pass, then
-exit - 0 when the findings were written (finding something is not a failure), 1 when it couldn't look, so the
-CronJob's last successful run is what Zabbix watches for Anubis itself. Later it is the only one that retires.
+what the checks found into the ConfigMap anubis-findings, which Zabbix reads (D115). An app `stopped` in Thoth
+(scaled to 0 on purpose) is present, never stuck. One pass, then exit - 0 when the findings were written (finding
+something is not a failure), 1 when it couldn't look, so the CronJob's last successful run is what Zabbix watches for
+Anubis itself. Later it is the only one that retires.
 """
 
 import logging

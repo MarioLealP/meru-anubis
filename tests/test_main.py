@@ -38,9 +38,11 @@ UNSEEN = [
 class FakeThoth:
     def __init__(self) -> None:
         self.verdicts: list[tuple[str, str, str]] = []
+        self.asked: list[str] = []
 
     def __call__(self, request: httpx2.Request) -> httpx2.Response:
         if request.url.path == "/v1/items":
+            self.asked.append(request.url.params["status"])
             return httpx2.Response(200, json=ITEMS[request.url.params["status"]])
         if request.url.path == "/v1/unseen":
             return httpx2.Response(200, json=UNSEEN)
@@ -124,3 +126,8 @@ def test_main_exits_with_the_pass_result(monkeypatch: pytest.MonkeyPatch, code: 
     with pytest.raises(SystemExit) as exited:
         anubis.main()
     assert exited.value.code == code
+
+
+def test_only_planned_decommissioning_and_retained_apps_can_be_stuck():
+    _, fake = weigh()
+    assert sorted(fake.asked) == ["decommissioning", "planned", "retained"]  # active and stopped apps are present
