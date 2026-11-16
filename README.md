@@ -1,4 +1,4 @@
-# anubis
+# Anubis - stuck-app reports
 
 Meru's verdicts - reports what is stuck in Thoth, later the only one that retires
 
