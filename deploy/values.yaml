@@ -7,8 +7,8 @@ name: anubis
 owner: mario
 image:
   repository: zot.clockmost.com/meru/anubis
-  digest: sha256:f6a30402e188b2ff4e3e9dca74e1e9e500bd9dc0327734d9b1b08703c3851e17
-  tag: "09775b2aea74"
+  digest: sha256:987aec4db124edee00c847b68bc8f27f531c7ea62fd8636758ee0af2f9738954
+  tag: "2b7c7d529ba1"
 # A daily pass (D107's shape, D114), not a service: a CronJob, no Service, no probes. 11:30 Lisbon - half an hour after
 # Charon's 11:00 pass, so a purge that ran today is already seen, and when the server is on.
 job:
